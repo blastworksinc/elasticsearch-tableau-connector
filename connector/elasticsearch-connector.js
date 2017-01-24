@@ -609,7 +609,9 @@ var elasticsearchConnector = (function () {
         requestData.size = connectionData.batchSize;
 
         var connectionUrl = connectionData.elasticsearchUrl + '/' + connectionData.elasticsearchIndex + '/' +
-            connectionData.elasticsearchType + '/_search?scroll=5m';
+            connectionData.elasticsearchType + '/_search';
+
+        // requestData.scroll = "5m";
 
         var xhr = $.ajax({
             url: connectionUrl,
