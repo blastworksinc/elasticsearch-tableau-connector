@@ -825,6 +825,12 @@ var elasticsearchConnector = (function () {
                 item._id = hits[ii]._id;
                 item._sequence = totalCount + ii;
 
+                // `@timestamp` produced by Apache Logstash
+                if (item.hasOwnProperty('@timestamp')) {
+                    item['timestamp'] = item['@timestamp'];
+                    delete item['@timestamp'];
+                }
+
                 toRet.push(item);
             }
 
