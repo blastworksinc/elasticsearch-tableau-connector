@@ -127,6 +127,11 @@ var elasticsearchConnector = (function () {
 
         console.log('[connector:getSchema] column names: ' + _.pluck(connectionData.fields, 'name').join(', '));
 
+        connectionData.fields = _.map(connectionData.fields, function(field){
+            field.name = field.name.replace("@", "");
+            return field;
+        });
+
         var cols = _.map(connectionData.fields, function(field){
             return {
                 id: field.name,
