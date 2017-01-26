@@ -12,7 +12,7 @@ var tableauData = (function () {
 
         if (updatedMap) {
             _.forIn(updatedMap, function (val, key) {
-                if(key == "elasticsearchUsername" || key == "elasticsearchPassword" || 
+                if(key == "elasticsearchUsername" || key == "elasticsearchPassword" ||
                    key == "elasticsearchAuthenticate" || key == "useSyncClientWorkaround"){
                     return;
                 }
@@ -72,7 +72,7 @@ var tableauData = (function () {
         },
         getUnwrapped: function(){
             console.log("[TableauData] returning data unwrapped");
-            return _data();            
+            return _data();
         },
         updateProperties: updateProperties,
         updateAuthCredentials: updateAuthCredentials

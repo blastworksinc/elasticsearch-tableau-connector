@@ -23,7 +23,6 @@ var elasticsearchConnector = (function () {
         aggQueryEditor;
 
     var addElasticsearchField = function (name, esType, format, hasLatLon) {
-
         if (_.isUndefined(elasticsearchTableauDataTypeMap[esType])) {
             console.log("Unsupported Elasticsearch type: " + esType + " for field: " + name);
             return;
@@ -44,7 +43,6 @@ var elasticsearchConnector = (function () {
     }
 
     var getElasticsearchTypeMapping = function (connectionData, cb) {
-
         console.log('[getElasticsearchTypeMapping] invoking...');
 
         if(!connectionData.elasticsearchUrl){
@@ -95,7 +93,7 @@ var elasticsearchConnector = (function () {
                 }
             });
     }
-    
+
 
     function abort(errorMessage, kill) {
 
@@ -111,7 +109,7 @@ var elasticsearchConnector = (function () {
 
     //
     // Connector definition
-    // 
+    //
 
     var myConnector = tableau.makeConnector();
 
@@ -243,17 +241,16 @@ var elasticsearchConnector = (function () {
             html: true,
             delay: { hide: 2500 },
             placement: "left",
-            content: "Use Query String syntax to define a filter to apply to the data that is aggregated.  Refer to: <a href='https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html#query-string-syntax' target='_blank'>Query String Syntax</a>"           
+            content: "Use Query String syntax to define a filter to apply to the data that is aggregated.  Refer to: <a href='https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html#query-string-syntax' target='_blank'>Query String Syntax</a>"
         });
 
-        $("#submitButton").click(function (e) { // This event fires when a button is clicked            
+        $("#submitButton").click(function (e) { // This event fires when a button is clicked
             console.log("[Elasticsearch Connector] - Submit - noop")
         });
 
     };
 
     var getElasticsearchConnectionFieldInfo = function (connectionData, cb) {
-
         elasticsearchFields = [];
         elasticsearchFieldsMap = {};
         elasticsearchAggsMap = {};
@@ -329,7 +326,7 @@ var elasticsearchConnector = (function () {
                         else{
                             addElasticsearchField(key, val.type, val.format, val.lat_lon);
                         }
-                        
+
                     });
 
                     console.log('[getElasticsearchConnectionFieldInfo] Number of header columns: ' + elasticsearchFields.length);
@@ -440,10 +437,10 @@ var elasticsearchConnector = (function () {
         var dateIntervalMap = {
             "Every Second": "1s",
             "Every Minute": "1m",
-            "Hourly": "1h", 
-            "Daily": "1d", 
-            "Weekly": "1w", 
-            "Monthly": "1M", 
+            "Hourly": "1h",
+            "Daily": "1d",
+            "Weekly": "1w",
+            "Monthly": "1M",
             "Yearly": "1y"
         };
 
@@ -505,7 +502,7 @@ var elasticsearchConnector = (function () {
                     })
                 };
             }
- 
+
             bucketNum++;
             currentAg[bucketName].aggregations = {};
             lastAg = currentAg;
@@ -609,9 +606,7 @@ var elasticsearchConnector = (function () {
         requestData.size = connectionData.batchSize;
 
         var connectionUrl = connectionData.elasticsearchUrl + '/' + connectionData.elasticsearchIndex + '/' +
-            connectionData.elasticsearchType + '/_search';
-
-        // requestData.scroll = "5m";
+            connectionData.elasticsearchType + '/_search?scroll=5m';
 
         var xhr = $.ajax({
             url: connectionUrl,
@@ -620,6 +615,8 @@ var elasticsearchConnector = (function () {
             data: JSON.stringify(requestData),
             dataType: 'json',
             beforeSend: function (xhr) {
+                xhr.setRequestHeader('Accept', null);
+                xhr.setRequestHeader('Content-Type', 'application/json');
                 beforeSendAddAuthHeader(xhr, connectionData);
             },
             success: function (data) {
@@ -663,6 +660,8 @@ var elasticsearchConnector = (function () {
             data: JSON.stringify(requestData),
             dataType: 'json',
             beforeSend: function (xhr) {
+                xhr.setRequestHeader('Accept', null);
+                xhr.setRequestHeader('Content-Type', 'application/json');
                 beforeSendAddAuthHeader(xhr, connectionData);
             },
             success: function (data) {
@@ -677,7 +676,7 @@ var elasticsearchConnector = (function () {
                         if(!tableauDataMode){
                             innerResult.results = innerResult.results.concat(result.results);
                         }
-                        
+
                         if (cb) {
                             cb(null, innerResult);
                         }
@@ -847,7 +846,7 @@ var elasticsearchConnector = (function () {
 
             if(tableauDataMode){
                 table.appendRows(toRet);
-            }            
+            }
 
             return { results: toRet, scrollId: data._scroll_id, numProcessed: toRet.length, more: moreRecords };
 
@@ -855,7 +854,7 @@ var elasticsearchConnector = (function () {
             console.log("[getRemainingScrollResults] No results found for Elasticsearch query: " + JSON.stringify(requestData));
             if(tableauDataMode){
                 table.appendRows([]);
-            }            
+            }
 
             return ({results: [], scrollId: data._scroll_id, numProcessed: 0, more: false});
         }
@@ -900,6 +899,8 @@ var elasticsearchConnector = (function () {
             data: JSON.stringify(requestData),
             dataType: 'json',
             beforeSend: function (xhr) {
+                xhr.setRequestHeader('Accept', null);
+                xhr.setRequestHeader('Content-Type', 'application/json');
                 beforeSendAddAuthHeader(xhr, connectionData);
             },
             success: function (data) {
@@ -919,7 +920,7 @@ var elasticsearchConnector = (function () {
                 if (cb) {
                     cb(null, result);
                 }
-                
+
             },
             error: function (xhr, ajaxOptions, err) {
                 var error;
@@ -948,7 +949,7 @@ var elasticsearchConnector = (function () {
         var rows = [];
         var currentRow = {};
 
-        visitAggregationResponseLevels(aggregations, rows, currentRow);        
+        visitAggregationResponseLevels(aggregations, rows, currentRow);
 
         return rows;
     };
@@ -1276,7 +1277,7 @@ var elasticsearchConnector = (function () {
     };
 
     var beforeSendAddAuthHeader = function(xhr, connectionData){
-        
+
         var creds = getAuthCredentials(connectionData);
 
         if (connectionData.elasticsearchAuthenticate && creds.username) {

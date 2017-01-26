@@ -33,7 +33,7 @@ var koCustomBindings = (function () {
             }
 
 
-        }   
+        }
     };
 
     ko.bindingHandlers.typeahead = {
@@ -91,7 +91,7 @@ var koCustomBindings = (function () {
 
             }
         }
-    };    
+    };
 
     ko.bindingHandlers.bootstrapChecked = {
         init: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
@@ -139,13 +139,13 @@ var koCustomBindings = (function () {
 
         }
     };
-    
+
 
     return {
         bootstrapDatePicker: ko.bindingHandlers.bootstrapDatePicker,
         bootstrapPopover: ko.bindingHandlers.bootstrapPopover,
         typeahead: ko.bindingHandlers.typeahead,
-        aceEditor: ko.bindingHandlers.aceEditor 
+        aceEditor: ko.bindingHandlers.aceEditor
     };
 
 })();
