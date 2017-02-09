@@ -13,7 +13,7 @@ RUN npm install -g grunt-cli bower && \
 	git config --global url."https://".insteadOf git://
 
 RUN cd /usr/local && \
-	git clone --depth=1 --branch=master https://github.com/mradamlacey/elasticsearch-tableau-connector.git && \
+	git clone --depth=1 --branch=master https://github.com/blastworksinc/elasticsearch-tableau-connector.git && \
 	cd elasticsearch-tableau-connector && \
 	rm -rf .git && \
 	npm install && \
